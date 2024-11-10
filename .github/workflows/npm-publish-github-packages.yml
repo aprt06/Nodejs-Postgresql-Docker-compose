@@ -15,8 +15,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npm test
+      - run: npm ci
+        working-directory: ./node-js-postgresql-crud-example/
+      # - run: npm test
 
   publish-gpr:
     needs: build
@@ -30,7 +31,11 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-      - run: npm install
+
+      - run: npm ci
+        working-directory: ./node-js-postgresql-crud-example/
+
       - run: npm publish
+        working-directory: ./node-js-postgresql-crud-example/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
