@@ -1,0 +1,47 @@
+name: myapp
+services:
+  nginx: 
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - backend  # Ensure Nginx and Node.js are on the same network
+  app:
+    build:
+        context: ./node-js-postgresql-crud-example
+        dockerfile: ./Dockerfile
+    container_name: nodejs-app
+    volumes:
+      - ./node-js-postgresql-crud-example:/usr/src/app
+      - /usr/src/app/node_modules  # Fix error module not found :)
+    depends_on:
+      - postgresdb
+    networks:
+      - backend
+
+  postgresdb:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=$POSTGRESDB_USER
+      - POSTGRES_PASSWORD=$POSTGRESDB_PASSWORD
+      - POSTGRES_DB=$POSTGRESDB_DATABASE
+    env_file: ./.env
+
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Run SQL on initialization
+
+    networks:
+      - backend
+    
+networks:
+  backend:
+    # Use a custom driver
+    driver: bridge
+
+volumes:
+  db: 
+
