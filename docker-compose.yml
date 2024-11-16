@@ -11,11 +11,11 @@ services:
       - backend  # Ensure Nginx and Node.js are on the same network
   app:
     build:
-        context: ./node-js-postgresql-crud-example
+        context: ./app
         dockerfile: ./Dockerfile
     container_name: nodejs-app
     volumes:
-      - ./node-js-postgresql-crud-example:/usr/src/app
+      - ./app:/usr/src/app
       - /usr/src/app/node_modules  # Fix error module not found :)
     depends_on:
       - postgresdb
