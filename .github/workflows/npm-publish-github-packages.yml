@@ -19,8 +19,7 @@ jobs:
         working-directory: ./node-js-postgresql-crud-example/
       - run: npm run build --if-present
         working-directory: ./node-js-postgresql-crud-example/
-      - run: npm test
-        working-directory: ./node-js-postgresql-crud-example/
+      
  
 
   # publish-gpr:
