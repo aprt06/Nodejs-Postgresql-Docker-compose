@@ -12,7 +12,7 @@ COPY package*.json ./
 USER root
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 COPY . .
 # Start the application
