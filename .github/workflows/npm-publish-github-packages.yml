@@ -25,5 +25,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
           ls
+          cd app
+          ls
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/tutorialsapp:${{ github.sha }}  -f app/Dockerfile
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/tutorialsapp:${{ github.sha }}
