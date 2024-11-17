@@ -15,10 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
- 
       - run: npm ci
         working-directory: ./app
- 
       - name: 'Docker Login'
         uses: azure/docker-login@v2
         with:
