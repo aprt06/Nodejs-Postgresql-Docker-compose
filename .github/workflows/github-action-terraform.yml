@@ -42,15 +42,16 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-
+    - name: Change directory to Terraform folder
+      run: cd .github/workflows 
     # Terraform Init
     - name: Terraform Init
       run: terraform init
       
     # Terraform Plan
     - name: Terraform Plan
-      run: terraform plan -out=tfplan -chdir=.github/workflows
+      run: terraform plan -out=tfplan  
     # Terraform Apply
     - name: Terraform Apply
       if: github.event_name == 'push'
-      run: terraform apply -auto-approve tfplan -chdir=.github/workflows
+      run: terraform apply -auto-approve tfplan  
