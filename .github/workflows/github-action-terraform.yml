@@ -46,8 +46,7 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-    - name: Change directory to Terraform folder
-      run: cd .github/workflows 
+   
     # Terraform Init
     - name: Terraform Init
       run: terraform init
