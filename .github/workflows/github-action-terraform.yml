@@ -32,13 +32,16 @@ jobs:
         # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }} # Optional if using Terraform Cloud
 
     
+    # - name: Azure login
+    #   uses: azure/login@v2
+    #   with:
+    #     auth-type: IDENTITY
+    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    #     enable-AzPSSession: true
     - name: Azure login
-      uses: azure/login@v2
-      with:
-        auth-type: IDENTITY
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        enable-AzPSSession: true
+      run: az login --service-principal --username ${{ secrets.AZURE_CLIENT_ID }} --password  ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }} 
+ 
 
     - name: Azure CLI script
       uses: azure/cli@v2
@@ -46,6 +49,7 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
+          
 
       # Set environment variables for Terraform
     - name: Set Terraform Environment Variables
