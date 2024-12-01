@@ -45,12 +45,12 @@ jobs:
 
     # Terraform Init
     - name: Terraform Init
-      run: terraform init 
+      run: terraform init -chdir=.github/workflows
       
     # Terraform Plan
     - name: Terraform Plan
-      run: terraform plan -out=tfplan 
+      run: terraform plan -out=tfplan -chdir=.github/workflows
     # Terraform Apply
     - name: Terraform Apply
       if: github.event_name == 'push'
-      run: terraform apply -auto-approve tfplan
+      run: terraform apply -auto-approve tfplan -chdir=.github/workflows
