@@ -45,7 +45,7 @@ jobs:
 
     # Terraform Init
     - name: Terraform Init
-      run: terraform init -chdir=.github/workflows
+      run: terraform init
       
     # Terraform Plan
     - name: Terraform Plan
