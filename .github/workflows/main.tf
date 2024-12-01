@@ -89,6 +89,8 @@ resource "azurerm_postgresql_flexible_server" "default" {
   storage_mb             = 32768
   sku_name               = "GP_Standard_D2s_v3"
   backup_retention_days  = 7
+  
+  public_network_access_enabled = false
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.default]
 }
