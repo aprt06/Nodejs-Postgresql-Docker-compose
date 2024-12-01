@@ -4,6 +4,6 @@ variable "name_prefix" {
 }
 
 variable "location" {
-  default     = "eastus"
+  default     = "westeurope"
   description = "Location of the resource."
 }
