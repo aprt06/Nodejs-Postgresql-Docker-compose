@@ -32,14 +32,20 @@ jobs:
         # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }} # Optional if using Terraform Cloud
 
     # Azure Login
-    - name: Azure Login
+    - name: Azure CLI Login
       uses: azure/login@v2
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        allow-no-subscriptions: true
-        enable-AzPSSession: true
-
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
+          # You can write your Azure CLI inline scripts here.
   
     # Terraform Init
     - name: Terraform Init
