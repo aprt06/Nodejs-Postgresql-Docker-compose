@@ -11,6 +11,14 @@ on:
           - dev
           - staging
           - prod
+      action:
+        description: "Select the Terraform action"
+        required: true
+        default: "apply"
+        type: choice
+        options:
+          - apply
+          - destroy
           
 permissions:
   id-token: write
