@@ -1,7 +1,11 @@
 name: 'Terraform'
 on:
-  workflow_dispatch: 
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to destroy (e.g., dev, staging, prod)"
+        required: true
+        default: "dev"
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -43,7 +47,9 @@ jobs:
 
     # Terraform Init
     - name: Terraform Init
-      run: terraform init
+      run: |
+        terraform init
+        terraform workspace select ${{ github.event.inputs.environment }}
       
     # Terraform Plan
     - name: Terraform Plan
