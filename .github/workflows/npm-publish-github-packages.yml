@@ -5,7 +5,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -17,4 +17,15 @@ jobs:
           node-version: 20
       - run: npm ci
         working-directory: ./app
- 
+      - name: 'Docker Login'
+        uses: azure/docker-login@v2
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          ls
+          cd ./app
+          ls
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/tutorialsapp:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/tutorialsapp:${{ github.sha }}
