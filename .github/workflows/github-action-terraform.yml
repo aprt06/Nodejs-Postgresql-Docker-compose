@@ -48,8 +48,7 @@ jobs:
     # Terraform Init
     - name: Terraform Init
       run: |
-        terraform init -reconfigure
-        terraform workspace select ${{ github.event.inputs.environment }}
+        terraform init
       
     # Terraform Plan
     - name: Terraform Plan
