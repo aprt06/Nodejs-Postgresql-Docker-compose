@@ -3,14 +3,15 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Environment to destroy (e.g., dev, staging, prod)"
+        description: "Select the target environment"
         required: true
         default: "dev"
-# env:
-#   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-#   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+          
 permissions:
   id-token: write
   contents: read
@@ -51,12 +52,16 @@ jobs:
         echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV 
-        
+   
     - name: Terraform Init
-      run: terraform init
-    # Terraform Plan
+      run: |
+        terraform init
+        terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
     - name: Terraform Plan
       run: terraform plan -out main.tfplan
     # Terraform Apply
     - name: Terraform Apply
       run: terraform apply main.tfplan
+      # Terraform Apply or Destroy based on Input
+    - name: Terraform Action
+      run: terraform ${{ github.event.inputs.action }} -auto-approve
