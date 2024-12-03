@@ -47,8 +47,7 @@ jobs:
 
     # Terraform Init
     - name: Terraform Init
-      run: |
-        terraform init
+      run: terraform init
       
     # Terraform Plan
     - name: Terraform Plan
