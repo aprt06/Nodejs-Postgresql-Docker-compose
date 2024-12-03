@@ -85,7 +85,6 @@ resource "azurerm_postgresql_flexible_server" "default" {
   private_dns_zone_id    = azurerm_private_dns_zone.default.id
   administrator_login    = "adminTerraform"
   administrator_password = random_password.pass.result
-  zone                   = "1"
   storage_mb             = 32768
   sku_name               = "B_Standard_B1ms"
   backup_retention_days  = 7
