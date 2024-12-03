@@ -44,11 +44,9 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-
-    # Terraform Init
+          
     - name: Terraform Init
       run: terraform init
-      
     # Terraform Plan
     - name: Terraform Plan
       run: terraform plan -out main.tfplan
