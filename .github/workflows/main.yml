@@ -1,0 +1,57 @@
+
+name: 'Terraform Destroy'
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to destroy (e.g., dev, staging, prod)"
+        required: true
+        default: "dev"
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    working-directory: .github/workflows
+jobs:
+  terraform:
+    name: Terraform Workflow
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Set up Terraform
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.5 # Replace with your Terraform version
+
+    - name: Azure login
+      run: az login --service-principal --username ${{ secrets.AZURE_CLIENT_ID }} --password  ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }} 
+ 
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
+          
+    - name: Set Terraform Environment Variables
+      run: |
+        echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV 
+
+    - name: Terraform Init
+      run: |
+        terraform init
+        terraform workspace select ${{ github.event.inputs.environment }}
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
