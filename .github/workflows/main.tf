@@ -89,7 +89,7 @@ resource "azurerm_postgresql_flexible_server" "default" {
   sku_name               = "B_Standard_B1ms"
   backup_retention_days  = 7
 
-  public_network_access_enabled = false
+  public_network_access_enabled = true
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.default]
 }
