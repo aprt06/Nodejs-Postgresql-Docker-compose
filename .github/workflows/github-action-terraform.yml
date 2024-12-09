@@ -63,13 +63,14 @@ jobs:
    
     - name: Terraform Init
       run: |
+        rm -rf terraform.tfstate
         terraform init
         terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
     - name: Terraform Plan
-      run: terraform plan -out main.tfplan
+      run: terraform plan #-out main.tfplan
     # Terraform Apply
-    - name: Terraform Apply
-      run: terraform apply main.tfplan
+    # - name: Terraform Apply
+    #   run: terraform apply #main.tfplan
       # Terraform Apply or Destroy based on Input
     - name: Terraform Action
       run: terraform ${{ github.event.inputs.action }} -auto-approve
