@@ -87,6 +87,7 @@ resource "azurerm_postgresql_flexible_server" "default" {
   administrator_password = random_password.pass.result
   storage_mb             = 32768
   sku_name               = "B_Standard_B1ms"
+  zone                   = "2"
   backup_retention_days  = 7
 
   public_network_access_enabled = true
