@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "postgresdb",
-  USER: "postgres",
-  PASSWORD: "123",
-  DB: "testdb",
+  HOST: process.env.DB_HOST || "postgresdb",  // Default fallback to "postgresdb"
+  USER: process.env.DB_USER || "postgres",
+  PASSWORD: process.env.DB_PASSWORD || "123",
+  DB: process.env.DB_NAME || "testdb",
   dialect: "postgres",
   pool: {
     max: 5,
