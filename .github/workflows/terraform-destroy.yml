@@ -1,25 +1,13 @@
-name: 'Terraform'
+
+name: 'Terraform Destroy'
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Select the target environment"
+        description: "Environment to destroy (e.g., dev, staging, prod)"
         required: true
         default: "dev"
-        type: choice
-        options:
-          - dev
-          - staging
-          - prod
-      action:
-        description: "Select the Terraform action"
-        required: true
-        default: "apply"
-        type: choice
-        options:
-          - apply
-          - destroy
-          
+
 permissions:
   id-token: write
   contents: read
@@ -60,17 +48,9 @@ jobs:
         echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV 
-   
+
     - name: Terraform Init
       run: |
-        rm -rf terraform.tfstate
-        terraform init
-        terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
-    - name: Terraform Plan
-      run: terraform plan #-out main.tfplan
-    # Terraform Apply
-    # - name: Terraform Apply
-    #   run: terraform apply #main.tfplan
-      # Terraform Apply or Destroy based on Input
-    - name: Terraform Action
-      run: terraform ${{ github.event.inputs.action }} -auto-approve
+        terraform init 
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
